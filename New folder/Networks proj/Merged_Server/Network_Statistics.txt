@@ -1,0 +1,6 @@
+port 20 is closed
+port 21 is open
+port 22 is closed
+port 23 is closed
+port 24 is closed
+port 25 is closed

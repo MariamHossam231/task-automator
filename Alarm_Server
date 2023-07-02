@@ -1,0 +1,28 @@
+from socket import *
+import nmap
+
+ServerIP = "127.0.0.1"
+serverPort = 12000
+serverSocket = socket(AF_INET, SOCK_STREAM)
+serverSocket.bind((ServerIP, serverPort))
+serverSocket.listen(5)
+print('The server is ready to receive')
+while 1:
+    connectionSocket, client_addr = serverSocket.accept()
+
+    receivedPort = connectionSocket.recv(2048)
+    PortNumber = receivedPort.decode()
+
+    print(f"Received {PortNumber}")
+
+    scanner = nmap.PortScanner()
+    res = scanner.scan(ServerIP, PortNumber)
+    res = res['scan'][ServerIP]['tcp'][int(PortNumber)]['state'] #res = open/close
+    
+    if (res == 'closed'):
+        print(f"NETWORK ALARM!!! PORT {PortNumber} is {res}")
+    elif (res == "open"):
+        print(f"PORT {PortNumber} is {res}")
+    
+
+    connectionSocket.close()
